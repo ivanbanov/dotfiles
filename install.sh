@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Idempotent: safe to re-run. It stows packages with GNU Stow.
+
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -83,8 +83,6 @@ if [ ! -f "$HANDY_DIR/settings_store.json" ]; then
   mkdir -p "$HANDY_DIR"
   cp "$DOTFILES_DIR/appdefaults/handy/settings_store.json" "$HANDY_DIR/settings_store.json"
 fi
-
-info "Done. Remember to set the WakaTime key in Zed."
 
 # 9. Celebrate 🎉
 # ==================================================================================================
