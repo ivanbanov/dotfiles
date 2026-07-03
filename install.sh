@@ -69,7 +69,13 @@ info "Applying macOS defaults..."
 
 info "Done. Remember to set the WakaTime key in Zed."
 
-# 8. Reload the shell
+# 8. Celebrate 🎉
+# ==================================================================================================
+# Must run BEFORE the exec below — exec replaces this process, so nothing after
+# it would run. Best-effort; never fails the install.
+"$DOTFILES_DIR/celebrate.sh" "Setup done!" || true
+
+# 9. Reload the shell
 # ==================================================================================================
 # Replace this process with a fresh login zsh so ~/.zshrc is sourced.
 info "Reloading zsh..."

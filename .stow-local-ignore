@@ -4,6 +4,7 @@
 README\.md
 install\.sh
 macos\.sh
+celebrate\.sh
 Brewfile
 Brewfile\.lock\.json
 \.stow-local-ignore
