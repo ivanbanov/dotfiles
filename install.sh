@@ -70,15 +70,20 @@ done
 info "Applying macOS defaults..."
 "$DOTFILES_DIR/macos.sh"
 
+# 8. App preferences (defaults-based utility apps: Rectangle, Stats, ...)
+# ==================================================================================================
+info "Importing app preferences..."
+"$DOTFILES_DIR/appdefaults.sh"
+
 info "Done. Remember to set the WakaTime key in Zed."
 
-# 8. Celebrate 🎉
+# 9. Celebrate 🎉
 # ==================================================================================================
 # Must run BEFORE the exec below — exec replaces this process, so nothing after
 # it would run. Best-effort; never fails the install.
 "$DOTFILES_DIR/celebrate.sh" "Setup done!" || true
 
-# 9. Reload the shell
+# 10. Reload the shell
 # ==================================================================================================
 # Replace this process with a fresh login zsh so ~/.zshrc is sourced.
 info "Reloading zsh..."

@@ -42,6 +42,9 @@ defaults write NSGlobalDomain com.apple.mouse.scaling -float 1.5
 # ==================================================================================================
 # Show all file extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+# Breadcrumb path bar + status bar (item count / free space)
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
 
 # Screenshots: no drop shadow, no floating thumbnail
 # ==================================================================================================
