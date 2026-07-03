@@ -72,6 +72,9 @@ cask "raycast"
 # Email client
 cask "readdle-spark"
 
+# System monitor for the menu bar
+cask "stats"
+
 # Messaging app with a focus on speed and security
 cask "telegram"
 
