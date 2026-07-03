@@ -1,11 +1,7 @@
 export EDITOR=nvim
 
-# secrets (git-ignored; copy ~/.config/secrets.env.example and fill in)
-[ -f ~/.config/secrets.env ] && source ~/.config/secrets.env
-
 # brew
 export PATH="$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
-export ZSH_TMUX_AUTOSTART=true
 
 # zsh
 export ZSH="/Users/ivanbanov/.oh-my-zsh"
@@ -49,12 +45,10 @@ export CLAUDE_CODE_EXECUTABLE="$(which claude)"
 export PNPM_HOME="/Users/ivanbanov/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
-# Slack
-export SLACK_TOKEN SLACK_COOKIE SLACK_USER_ID
-alias slack="~/.config/slack/slack.sh"
-
-# Github
-# GITHUB_TOKEN is provided by ~/.config/secrets.env (see below)
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "/Users/ivanbanov/.bun/_bun" ] && source "/Users/ivanbanov/.bun/_bun"
 
 # aliases
 alias back="cd $OLDPWD"
@@ -134,19 +128,3 @@ typeset -U PATH
 
 # start session
 fastfetch
-
-# Created by `pipx` on 2025-11-20 20:32:48
-export PATH="$PATH:/Users/ivanbanov/.local/bin"
-
-# bun completions
-[ -s "/Users/ivanbanov/.bun/_bun" ] && source "/Users/ivanbanov/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ivanbanov/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ivanbanov/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ivanbanov/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ivanbanov/Downloads/google-cloud-sdk/completion.zsh.inc'; fi

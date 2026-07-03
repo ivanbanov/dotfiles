@@ -2,7 +2,7 @@
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
-    "dark": "Zed (Default)"
+    "dark": "Zed (Default)",
   },
   "cli_default_open_behavior": "existing_window",
   "project_panel": {
@@ -28,7 +28,7 @@
         "fast": "off",
         "effort": "xhigh",
         "mode": "auto",
-        "model": "opus[1m]"
+        "model": "opus[1m]",
       },
       "type": "registry",
     },
@@ -39,16 +39,6 @@
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"],
     },
-    // "miro-design-system-mcp": {
-    //   "enabled": false,
-    //   "command": "npx",
-    //   "args": [
-    //     "-y",
-    //     "mcp-remote",
-    //     "https://svc.eu01.staging.testmiro.com/api/design-system-docs-mcp/api/mcp",
-    //   ],
-    //   "env": {},
-    // },
   },
   "git_panel": {
     "dock": "left",
@@ -58,7 +48,7 @@
     "collapse_untracked_diff": false,
     "file_icons": false,
     "tree_view": false,
-    "sort_by_path": true,
+    "sort_by": "path",
   },
   "edit_predictions": {
     "provider": "zed",

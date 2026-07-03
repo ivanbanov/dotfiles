@@ -1,10 +1,1 @@
-# Never commit real secrets. The template lives at secrets/.config/secrets.env.example
-secrets.env
-.config/secrets.env
-
-# macOS
 .DS_Store
-
-# Editor / tool state that isn't real config
-*.swp
-*.swo
