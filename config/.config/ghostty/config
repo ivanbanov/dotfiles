@@ -1,0 +1,6 @@
+# Ghostty configuration.
+# Docs: https://ghostty.org/docs/config
+
+# Fira Code with Nerd Font glyphs (installed via Brewfile: font-fira-code-nerd-font)
+font-family = FiraCode Nerd Font
+font-size = 14

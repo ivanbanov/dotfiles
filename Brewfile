@@ -63,6 +63,9 @@ cask "1password"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 
+# Monospace font with programming ligatures + Nerd Font glyphs (terminal font)
+cask "font-fira-code-nerd-font"
+
 # Speech to text application
 cask "handy"
 
