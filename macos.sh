@@ -48,6 +48,27 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.screencapture show-thumbnail -bool false
 defaults write com.apple.screencapture disable-shadow -bool true
 
+# Menu bar: clock + Control Center modules
+# ==================================================================================================
+# NOTE: only the system/Control-Center items live here. Third-party icons
+# (Raycast, Stats, 1Password, ...) are toggled inside each app, and their
+# left-right order is set once by Cmd-dragging — neither is scriptable.
+# Clock: digital, 24h, with date, no day-of-week
+defaults write com.apple.menuextra.clock IsAnalog -bool false
+defaults write com.apple.menuextra.clock ShowDate -int 2
+defaults write com.apple.menuextra.clock ShowDayOfWeek -bool false
+# Control Center: show battery, Bluetooth, Wi-Fi, clock; hide sound/now-playing/etc.
+defaults write com.apple.controlcenter "NSStatusItem Visible Battery" -bool true
+defaults write com.apple.controlcenter "NSStatusItem Visible Bluetooth" -bool true
+defaults write com.apple.controlcenter "NSStatusItem Visible WiFi" -bool true
+defaults write com.apple.controlcenter "NSStatusItem Visible Clock" -bool true
+defaults write com.apple.controlcenter "NSStatusItem Visible Sound" -bool false
+defaults write com.apple.controlcenter "NSStatusItem Visible NowPlaying" -bool false
+defaults write com.apple.controlcenter "NSStatusItem Visible ScreenMirroring" -bool false
+defaults write com.apple.controlcenter "NSStatusItem Visible AudioVideoModule" -bool false
+# Hide the battery percentage (matches current setup; flip to true to show it)
+defaults write com.apple.controlcenter BatteryShowPercentage -bool false
+
 # Hot corners  (0 none · 5 screensaver · 4 desktop; modifier 0 = no key)
 # ==================================================================================================
 # Bottom-left: start screen saver (locks, given the password setting below)
@@ -73,7 +94,7 @@ fi
 
 # Apply
 # ==================================================================================================
-for app in Dock Finder SystemUIServer; do
+for app in Dock Finder SystemUIServer ControlCenter; do
   killall "$app" >/dev/null 2>&1 || true
 done
 mkdir -p "$(dirname "$SENTINEL")"
