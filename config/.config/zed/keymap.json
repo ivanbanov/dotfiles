@@ -1,0 +1,29 @@
+[
+  {
+    "context": "Pane",
+    "bindings": {
+      "ctrl-shift-tab": "pane::ActivatePreviousItem",
+      "ctrl-tab": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-shift-l": "editor::SplitSelectionIntoLines",
+      "cmd-ctrl-g": "editor::SelectAllMatches",
+      "cmd-\\": "workspace::NewFileSplitVertical"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-shift-a": "multi_workspace::ToggleWorkspaceSidebar"
+    }
+  },
+  {
+    "context": "Workspace",
+    "unbind": {
+      "alt-cmd-j": "multi_workspace::ToggleWorkspaceSidebar"
+    }
+  }
+]

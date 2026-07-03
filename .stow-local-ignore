@@ -1,0 +1,8 @@
+# Repo meta-files — never symlink these into $HOME
+\.git
+\.gitignore
+README\.md
+install\.sh
+Brewfile
+Brewfile\.lock\.json
+\.stow-local-ignore

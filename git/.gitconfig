@@ -1,0 +1,32 @@
+[user]
+  name = Ivan Banov
+  email = ivanbanov@gmail.com
+	signingkey = /Users/ivanbanov/.ssh/id_ed25519.pub
+
+[core]
+	editor = nvim
+	pager = delta
+	excludesFile = /Users/ivanbanov/.gitignore_global
+
+[push]
+	autoSetupRemote = true
+
+[interactive]
+	diffFilter = delta --color-only --show-images
+
+[delta]
+	line-numbers = true
+	side-by-side = true
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[alias]
+	pr-log = !git log --oneline $(git merge-base master HEAD)..HEAD
+[gpg "ssh"]
+	allowedSignersFile = /Users/ivanbanov/.ssh/allowed_signers

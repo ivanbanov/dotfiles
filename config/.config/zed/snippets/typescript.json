@@ -1,0 +1,17 @@
+{
+  "Log to the console": {
+    "prefix": ";;l",
+    "body": ["console.log($1)", "$0"],
+    "description": "Log to the console"
+  },
+  "Debugger": {
+    "prefix": ";;d",
+    "body": ["debugger", "$0"],
+    "description": "Debugger"
+  },
+  "Throw Exception": {
+    "prefix": ";;t",
+    "body": ["throw new Error(\"$1\")", "$0"],
+    "description": "Throw Exception"
+  }
+}

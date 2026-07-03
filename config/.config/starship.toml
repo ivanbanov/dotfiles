@@ -1,0 +1,41 @@
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$fill\
+$cmd_duration\
+$time\
+$nodejs\
+$line_break\
+$character\
+$line_break\
+"""
+command_timeout = 10000
+
+[directory]
+home_symbol="🏡 "
+truncate_to_repo=false
+truncation_length=999
+
+[git_branch]
+format = "[👻 $branch ]($style)"
+style = "bright-green"
+
+[fill]
+symbol = 'ᐧ'
+style = 'light'
+
+[cmd_duration]
+format="$duration "
+min_time = 0
+
+[time]
+format="[$time]($style) "
+disabled = false
+time_format = "%I:%M%p"
+style = "bright-black"
+
+[nodejs]
+format="[NodeJS ($version)]($style) "
+version_format="${raw}"
