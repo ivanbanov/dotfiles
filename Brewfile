@@ -9,6 +9,9 @@ tap "atlassian/acli"
 # Symlink farm manager for dotfiles (required by install.sh)
 brew "stow"
 
+# Software to interact with Atlassian Cloud from the terminal
+brew "atlassian/acli/acli"
+
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 

@@ -20,6 +20,9 @@ fi
 
 # 2. Packages
 # ==================================================================================================
+# Trust the third-party atlassian/acli tap (Homebrew 6+ gates untrusted taps;
+# the trust list is local, so re-establish it here). Ignored on older brew.
+brew trust --tap atlassian/acli >/dev/null 2>&1 || true
 info "Installing packages from Brewfile..."
 brew bundle --file="$DOTFILES_DIR/Brewfile"
 
