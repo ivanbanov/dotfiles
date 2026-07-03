@@ -16,6 +16,7 @@ What `install.sh` does:
 - 📦 Install packages
 - 🐚 Installs oh-my-zsh + plugins
 - 🔗 Stows every package
+- 🍎 Applies macOS defaults
 - 🔁 Reloads zsh
 
 ## Apps

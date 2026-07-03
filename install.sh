@@ -62,9 +62,14 @@ for pkg in "${PACKAGES[@]}"; do
   stow --target="$HOME" --restow "$pkg"
 done
 
+# 7. macOS system preferences
+# ==================================================================================================
+info "Applying macOS defaults..."
+"$DOTFILES_DIR/macos.sh"
+
 info "Done. Remember to set the WakaTime key in Zed."
 
-# 7. Reload the shell
+# 8. Reload the shell
 # ==================================================================================================
 # Replace this process with a fresh login zsh so ~/.zshrc is sourced.
 info "Reloading zsh..."

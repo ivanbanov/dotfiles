@@ -45,8 +45,14 @@ brew "zsh-autocomplete"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
+
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
+
+# Speech to text application
+cask "handy"
 
 # Native desktop AI assistant from Google
 cask "google-gemini"
