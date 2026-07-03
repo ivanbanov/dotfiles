@@ -38,7 +38,7 @@ hammerspoon/ -> ~/.hammerspoon/init.lua
 config/      -> ~/.config/{package}
 ```
 
-### Common commands
+### Commands
 
 ```sh
 stow zsh            # link one package
@@ -54,15 +54,7 @@ repo instead (review with `git diff` afterwards).
 
 ## Secrets
 
-`home/` holds `.npmrc` and `.ssh/config`, committed as empty templates. They're
-flagged `git update-index --skip-worktree`, so you fill in real secrets locally
-and git ignores the changes — they can't be committed. `install.sh` re-applies
-the flag on each machine (it's local-only, so a fresh clone needs it).
-
-To undo (e.g. to update the template): `git update-index --no-skip-worktree home/.npmrc`.
-
-## Updating the Brewfile
-
-```sh
-brew bundle dump --file=~/dotfiles/Brewfile --force --describe
-```
+`home/` holds `.npmrc` and `.ssh/config` as empty templates, flagged
+`git update-index --skip-worktree`: fill in real secrets locally and git ignores
+the changes, so they can't be committed. `install.sh` re-applies the flag per
+machine (it's local-only). To edit the template: `git update-index --no-skip-worktree <file>`.
