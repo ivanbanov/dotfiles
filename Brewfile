@@ -1,4 +1,10 @@
+# Tap
+# ==============================================================================
+
 tap "atlassian/acli"
+
+# Brew
+# ==============================================================================
 
 # Symlink farm manager for dotfiles (required by install.sh)
 brew "stow"
@@ -45,6 +51,9 @@ brew "zsh-autocomplete"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 
+# Cask
+# ==============================================================================
+
 # Password manager that keeps all passwords secure behind one password
 cask "1password"
 
@@ -62,6 +71,9 @@ cask "ghostty"
 
 # Utility to hide menu bar items
 cask "hiddenbar"
+
+# Menu bar calendar
+cask "itsycal"
 
 # Open-source keystroke visualiser
 cask "keycastr"
