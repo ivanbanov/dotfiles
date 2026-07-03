@@ -70,10 +70,19 @@ done
 info "Applying macOS defaults..."
 "$DOTFILES_DIR/macos.sh"
 
-# 8. App preferences (defaults-based utility apps: Rectangle, Stats, ...)
+# 8. App preferences (defaults-based utility apps: Rectangle, Itsycal, ...)
 # ==================================================================================================
 info "Importing app preferences..."
 "$DOTFILES_DIR/appdefaults.sh"
+
+# Handy stores config as a JSON file (not a defaults domain). Seed it only if
+# absent — never clobber a live file where you've since added API keys.
+HANDY_DIR="$HOME/Library/Application Support/com.pais.handy"
+if [ ! -f "$HANDY_DIR/settings_store.json" ]; then
+  info "Seeding Handy settings..."
+  mkdir -p "$HANDY_DIR"
+  cp "$DOTFILES_DIR/appdefaults/handy/settings_store.json" "$HANDY_DIR/settings_store.json"
+fi
 
 info "Done. Remember to set the WakaTime key in Zed."
 

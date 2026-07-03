@@ -1,1 +1,7 @@
 .DS_Store
+
+# Handy: only the sanitized settings JSON is tracked. Never commit private
+# voice recordings, transcription history, or downloaded ML models.
+appdefaults/handy/recordings/
+appdefaults/handy/history.db
+appdefaults/handy/models/
