@@ -84,6 +84,9 @@ cask "itsycal"
 # Open-source keystroke visualiser
 cask "keycastr"
 
+# Tool to control external monitor brightness & volume
+cask "monitorcontrol"
+
 # Control your tools with a few keystrokes
 cask "raycast"
 
