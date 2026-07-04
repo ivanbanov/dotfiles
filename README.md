@@ -1,4 +1,10 @@
-# dotfiles
+```
+      _       _    __ _ _
+   __| | ___ | |_ / _(_) | ___  ___
+  / _` |/ _ \| __| |_| | |/ _ \/ __|
+ | (_| | (_) | |_|  _| | |  __/\__ \
+  \__,_|\___/ \__|_| |_|_|\___||___/
+```
 
 macOS dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
