@@ -17,6 +17,7 @@ command_timeout = 10000
 home_symbol="🏡 "
 truncate_to_repo=false
 truncation_length=999
+style="bold #ffd866"
 
 [git_branch]
 format = "[👻 $branch ]($style)"
@@ -24,7 +25,7 @@ style = "bright-green"
 
 [fill]
 symbol = 'ᐧ'
-style = 'light'
+style = 'bright-black'
 
 [cmd_duration]
 format="$duration "

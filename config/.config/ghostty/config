@@ -4,3 +4,7 @@
 # Fira Code with Nerd Font glyphs (installed via Brewfile: font-fira-code-nerd-font)
 font-family = FiraCode Nerd Font
 font-size = 14
+
+# Monokai Pro palette (built into Ghostty). Without this the terminal used its
+# default palette, so starship's named ANSI colors rendered off (blueish).
+theme = Monokai Pro
