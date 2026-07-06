@@ -10,22 +10,19 @@ macOS dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Setup
 
-```sh
-# 1. Command Line Tools — provides git. Run FIRST and let the dialog finish.
-xcode-select --install
+**1. Command Line Tools** (provides `git` — required before the clone).
+Recommended: download **"Command Line Tools for Xcode"** from
+<https://developer.apple.com/download> and run the `.dmg`. This is the most
+reliable on a fresh Mac. (The shortcut `xcode-select --install` also works but
+its dialog is flaky.) Verify with `git --version` before continuing.
 
-# 2. Clone and run.
+**2. Clone and run.**
+
+```sh
 git clone https://github.com/ivanbanov/dotfiles ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 ```
-
-> On a brand-new Mac `git` doesn't exist yet, so `xcode-select --install` must
-> run (and finish) before the clone.
->
-> If `xcode-select --install` fails or `git --version` still doesn't work,
-> install the Command Line Tools manually: download "Command Line Tools for
-> Xcode" from <https://developer.apple.com/download/all> and run the `.dmg`.
 
 What `install.sh` does:
 
