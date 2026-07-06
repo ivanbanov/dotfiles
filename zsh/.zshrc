@@ -1,7 +1,7 @@
 export EDITOR=nvim
 
 # brew
-export PATH="$HOME/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
 
 # zsh
 export ZSH="/Users/ivanbanov/.oh-my-zsh"
