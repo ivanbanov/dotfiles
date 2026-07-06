@@ -5,8 +5,7 @@
 font-family = FiraCode Nerd Font
 font-size = 14
 
-# Match Zed's "Zedokai Darker" theme. Its terminal palette is identical to
-# Ghostty's built-in Monokai Pro except for ANSI black, so use that as the base
-# and override slot 0 to Zedokai's darker grey. bg/fg already match (#2d2a2e/#fcfcfa).
+# Ghostty's built-in Monokai Pro is byte-for-byte the official Monokai Pro
+# iTerm palette (https://monokai.pro/iterm): same 16 ANSI colors, bg #2d2a2e,
+# fg #fcfcfa, cursor #c1c0c0, selection #5b595c. No overrides needed.
 theme = Monokai Pro
-palette = 0=#403e41
