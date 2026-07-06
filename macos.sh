@@ -17,6 +17,19 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 # 24-hour clock
 defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
 
+# Free up Cmd+Space: disable Spotlight's hotkey so Raycast can own it
+# ==================================================================================================
+# Hotkey 64 = "Show Spotlight search" (Cmd+Space), 65 = Finder search window.
+# Set enabled=false; needs a logout/login to take effect. (Set Raycast's hotkey
+# to Cmd+Space in its own settings — that part isn't scriptable.)
+PB=/usr/libexec/PlistBuddy
+SHK="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
+for id in 64 65; do
+  $PB -c "Set :AppleSymbolicHotKeys:$id:enabled false" "$SHK" 2>/dev/null \
+    || $PB -c "Add :AppleSymbolicHotKeys:$id:enabled bool false" "$SHK" 2>/dev/null \
+    || true
+done
+
 # Text input: no autocorrect / smart substitutions
 # ==================================================================================================
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -100,9 +113,11 @@ fi
 
 # Apply
 # ==================================================================================================
-for app in Dock Finder SystemUIServer ControlCenter; do
+# cfprefsd first so the direct symbolichotkeys plist edit isn't cached over.
+for app in cfprefsd Dock Finder SystemUIServer ControlCenter; do
   killall "$app" >/dev/null 2>&1 || true
 done
 info "macOS defaults applied."
-warn "Log out and back in (or reboot) for keyboard/trackpad settings"
-warn "(three-finger drag, tap-to-click, key repeat) to take effect."
+warn "Log out and back in (or reboot) for keyboard/trackpad/Spotlight settings"
+warn "(three-finger drag, tap-to-click, key repeat, Cmd+Space) to take effect."
+warn "Then set Raycast's hotkey to Cmd+Space in Raycast > Settings."
