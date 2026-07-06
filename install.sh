@@ -94,7 +94,7 @@ for pkg in "${PACKAGES[@]}"; do
   # For every file the package provides, clear a conflicting target: a real
   # file gets backed up; a stray symlink not pointing into this repo is removed.
   # (Symlinks stow already owns are left for --restow to handle.)
-  while IFS= read -r src; do
+  find "$pkg" -type f -not -name '.DS_Store' | while IFS= read -r src; do
     rel="${src#"$pkg"/}"          # path relative to $HOME, e.g. .zshrc
     target="$HOME/$rel"
     if [ -L "$target" ]; then
@@ -107,7 +107,7 @@ for pkg in "${PACKAGES[@]}"; do
       mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
       mv "$target" "$BACKUP_DIR/$rel"
     fi
-  done < <(find "$pkg" -type f -not -name '.DS_Store')
+  done
   # Don't let one package's leftover conflict abort the rest of the install.
   stow --target="$HOME" --restow "$pkg" || warn "stow $pkg had conflicts — check $BACKUP_DIR"
 done
