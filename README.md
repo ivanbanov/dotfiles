@@ -16,6 +16,12 @@ Recommended: download **"Command Line Tools for Xcode"** from
 reliable on a fresh Mac. (The shortcut `xcode-select --install` also works but
 its dialog is flaky.) Verify with `git --version` before continuing.
 
+If `git` stalls on the license agreement, accept it once:
+
+```sh
+sudo xcodebuild -license accept
+```
+
 **2. Clone and run.**
 
 ```sh
