@@ -63,14 +63,20 @@ cask "1password"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
 
+# Web browser
+cask "firefox"
+
 # Monospace font with programming ligatures + Nerd Font glyphs (terminal font)
 cask "font-fira-code-nerd-font"
 
-# Speech to text application
-cask "handy"
+# Web browser
+cask "google-chrome"
 
 # Native desktop AI assistant from Google
 cask "google-gemini"
+
+# Speech to text application
+cask "handy"
 
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
