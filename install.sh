@@ -6,6 +6,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$DOTFILES_DIR"
 
 info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
+warn() { printf '\033[1;33m!!\033[0m %s\n' "$*"; }
 
 # 0. Xcode Command Line Tools (provides git, cc, make — Homebrew needs them)
 # ==================================================================================================
@@ -83,10 +84,32 @@ git update-index --skip-worktree "${SECRET_FILES[@]}"
 
 # 6. Stow all packages
 # ==================================================================================================
+# Back up any real file that a package would claim (e.g. the default ~/.zshrc
+# oh-my-zsh just created) so stow can link without a conflict. Symlinks stow
+# already owns are left alone.
 PACKAGES=(zsh git hammerspoon config)
+BACKUP_DIR="$HOME/.dotfiles-backup"
 info "Stowing: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
-  stow --target="$HOME" --restow "$pkg"
+  # For every file the package provides, clear a conflicting target: a real
+  # file gets backed up; a stray symlink not pointing into this repo is removed.
+  # (Symlinks stow already owns are left for --restow to handle.)
+  while IFS= read -r src; do
+    rel="${src#"$pkg"/}"          # path relative to $HOME, e.g. .zshrc
+    target="$HOME/$rel"
+    if [ -L "$target" ]; then
+      case "$(readlink "$target")" in
+        "$DOTFILES_DIR"/*) : ;;                 # already ours — leave it
+        *) info "Replacing foreign symlink $rel"; rm -f "$target" ;;
+      esac
+    elif [ -e "$target" ]; then
+      info "Backing up existing $rel -> $BACKUP_DIR/$rel"
+      mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
+      mv "$target" "$BACKUP_DIR/$rel"
+    fi
+  done < <(find "$pkg" -type f -not -name '.DS_Store')
+  # Don't let one package's leftover conflict abort the rest of the install.
+  stow --target="$HOME" --restow "$pkg" || warn "stow $pkg had conflicts — check $BACKUP_DIR"
 done
 
 # 7. macOS system preferences
