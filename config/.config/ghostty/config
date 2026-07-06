@@ -5,5 +5,5 @@ font-family = FiraCode Nerd Font
 font-size = 14
 theme = Monokai Pro
 
-split-divider-color = #ab9df2
+split-divider-color = #777
 keybind = shift+enter=text:\x1b\r
