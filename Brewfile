@@ -102,6 +102,9 @@ cask "rectangle"
 # Email client
 cask "readdle-spark"
 
+# Team communication and collaboration software
+cask "slack"
+
 # System monitor for the menu bar
 cask "stats"
 
