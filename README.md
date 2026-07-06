@@ -35,9 +35,13 @@ What `install.sh` does:
 - 🍺 Installs Homebrew
 - 📦 Install packages
 - 🐚 Installs oh-my-zsh + plugins
-- 🔗 Stows every package
+- 🔗 Stows every package (existing files are backed up to `~/.dotfiles-backup`)
 - 🍎 Applies macOS defaults
 - 🔁 Reloads zsh
+
+> Some keyboard/trackpad settings (three-finger drag, tap-to-click, key repeat)
+> only take effect after a **logout/login**. To also empty the Dock on a fresh
+> Mac, run `CLEAR_DOCK=1 ./install.sh`.
 
 ## Apps
 

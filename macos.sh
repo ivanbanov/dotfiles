@@ -3,8 +3,7 @@
 set -euo pipefail
 
 info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
-
-SENTINEL="$HOME/.config/.macos-defaults-applied"
+warn() { printf '\033[1;33m!!\033[0m %s\n' "$*"; }
 
 # Keyboard: press-and-hold repeats, at max speed
 # ==================================================================================================
@@ -32,7 +31,9 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-# Three-finger drag
+# Three-finger drag. NOTE: only takes effect after a logout/login — a killall
+# can't reload the daemon that owns trackpad prefs. On recent macOS this setting
+# lives under Accessibility > Pointer Control and may need enabling there once.
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 # Faster mouse tracking
@@ -84,14 +85,16 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-# Dock: auto-hide always; empty it only on a fresh machine
+# Dock: auto-hide always; empty it only when explicitly asked
 # ==================================================================================================
 defaults write com.apple.dock autohide -bool true
 # Magnify on hover
 defaults write com.apple.dock magnification -bool true
 defaults write com.apple.dock tilesize -int 71
-if [ ! -f "$SENTINEL" ]; then
-  info "Fresh machine — clearing all apps from the Dock."
+# Clearing the Dock is destructive, so it's opt-in: run `CLEAR_DOCK=1 ./macos.sh`
+# (or set it before install.sh) on a fresh machine. Never fires on a plain re-run.
+if [ "${CLEAR_DOCK:-0}" = "1" ]; then
+  info "CLEAR_DOCK=1 — clearing all apps from the Dock."
   defaults write com.apple.dock persistent-apps -array
 fi
 
@@ -100,6 +103,6 @@ fi
 for app in Dock Finder SystemUIServer ControlCenter; do
   killall "$app" >/dev/null 2>&1 || true
 done
-mkdir -p "$(dirname "$SENTINEL")"
-touch "$SENTINEL"
-info "macOS defaults applied. Some keyboard/input settings need a logout/login."
+info "macOS defaults applied."
+warn "Log out and back in (or reboot) for keyboard/trackpad settings"
+warn "(three-finger drag, tap-to-click, key repeat) to take effect."
