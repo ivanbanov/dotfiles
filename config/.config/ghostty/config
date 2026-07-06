@@ -5,6 +5,8 @@
 font-family = FiraCode Nerd Font
 font-size = 14
 
-# Monokai Pro palette (built into Ghostty). Without this the terminal used its
-# default palette, so starship's named ANSI colors rendered off (blueish).
+# Match Zed's "Zedokai Darker" theme. Its terminal palette is identical to
+# Ghostty's built-in Monokai Pro except for ANSI black, so use that as the base
+# and override slot 0 to Zedokai's darker grey. bg/fg already match (#2d2a2e/#fcfcfa).
 theme = Monokai Pro
+palette = 0=#403e41
