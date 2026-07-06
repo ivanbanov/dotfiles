@@ -27,6 +27,9 @@ brew "gh"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
 
+# Git extension for versioning large files (required by the lfs filter in .gitconfig)
+brew "git-lfs"
+
 # Agent multiplexer that lives in your terminal
 brew "herdr"
 
@@ -50,12 +53,6 @@ brew "tree"
 
 # Vi 'workalike' with many additional features
 brew "vim"
-
-# Real-time type-ahead completion for Zsh
-brew "zsh-autocomplete"
-
-# Fish shell like syntax highlighting for zsh
-brew "zsh-syntax-highlighting"
 
 # Cask
 # ==============================================================================

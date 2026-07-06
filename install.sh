@@ -82,12 +82,24 @@ SECRET_FILES=(home/.npmrc home/.ssh/config)
 info "Protecting secret files (git skip-worktree)..."
 git update-index --skip-worktree "${SECRET_FILES[@]}"
 
+# .gitconfig signs commits with an SSH key and verifies them against
+# allowed_signers. Seed that file from the signing key so `git log
+# --show-signature` trusts your own commits. Best-effort: the key is set up
+# manually (never committed), so skip cleanly if it isn't there yet.
+SIGNING_KEY="$HOME/.ssh/id_ed25519.pub"
+ALLOWED_SIGNERS="$HOME/.ssh/allowed_signers"
+if [ -f "$SIGNING_KEY" ] && [ ! -f "$ALLOWED_SIGNERS" ]; then
+  info "Seeding git allowed_signers..."
+  EMAIL="$(git config --file "$DOTFILES_DIR/git/.gitconfig" user.email)"
+  printf '%s namespaces="git" %s\n' "$EMAIL" "$(cat "$SIGNING_KEY")" > "$ALLOWED_SIGNERS"
+fi
+
 # 6. Stow all packages
 # ==================================================================================================
 # Back up any real file that a package would claim (e.g. the default ~/.zshrc
 # oh-my-zsh just created) so stow can link without a conflict. Symlinks stow
 # already owns are left alone.
-PACKAGES=(zsh git hammerspoon config)
+PACKAGES=(zsh git hammerspoon config home)
 BACKUP_DIR="$HOME/.dotfiles-backup"
 info "Stowing: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
