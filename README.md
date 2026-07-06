@@ -22,6 +22,10 @@ cd ~/dotfiles
 
 > On a brand-new Mac `git` doesn't exist yet, so `xcode-select --install` must
 > run (and finish) before the clone.
+>
+> If `xcode-select --install` fails or `git --version` still doesn't work,
+> install the Command Line Tools manually: download "Command Line Tools for
+> Xcode" from <https://developer.apple.com/download/all> and run the `.dmg`.
 
 What `install.sh` does:
 
