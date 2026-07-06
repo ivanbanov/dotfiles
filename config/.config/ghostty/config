@@ -1,17 +1,9 @@
 # Ghostty configuration.
 # Docs: https://ghostty.org/docs/config
 
-# Fira Code with Nerd Font glyphs (installed via Brewfile: font-fira-code-nerd-font)
 font-family = FiraCode Nerd Font
 font-size = 14
-
-# Ghostty's built-in Monokai Pro is byte-for-byte the official Monokai Pro
-# iTerm palette (https://monokai.pro/iterm): same 16 ANSI colors, bg #2d2a2e,
-# fg #fcfcfa, cursor #c1c0c0, selection #5b595c. No overrides needed.
 theme = Monokai Pro
 
-# Purple split divider + shift+enter sends a literal newline. These used to live
-# in the macOS app-support config (~/Library/Application Support/com.mitchellh.ghostty/config),
-# which dotfiles never tracked — folding them here so they sync.
 split-divider-color = #ab9df2
 keybind = shift+enter=text:\x1b\r
