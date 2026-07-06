@@ -42,6 +42,9 @@ brew "neovim"
 # Manage multiple Node.js versions
 brew "nvm"
 
+# Cross-shell prompt for astronauts
+brew "starship"
+
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 
