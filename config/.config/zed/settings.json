@@ -1,4 +1,15 @@
 {
+  // Extensions live in Zed's data dir, not in this file, so syncing settings
+  // alone never installs them. Listing them here makes Zed auto-install on
+  // launch — keep in sync with the themes/LSPs/languages configured below.
+  // (oxc provides both the oxlint and oxfmt language servers.)
+  "auto_install_extensions": {
+    "html": true,
+    "elm": true,
+    "wakatime": true,
+    "zedokai": true,
+    "oxc": true,
+  },
   "icon_theme": {
     "mode": "dark",
     "light": "Zed (Default)",
