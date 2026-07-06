@@ -108,5 +108,8 @@ cask "stats"
 # Messaging app with a focus on speed and security
 cask "telegram"
 
+# Native desktop client for WhatsApp
+cask "whatsapp"
+
 # Multiplayer code editor written in Rust
 cask "zed"
