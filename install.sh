@@ -7,6 +7,30 @@ cd "$DOTFILES_DIR"
 
 info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 
+# 0. Xcode Command Line Tools (provides git, cc, make — Homebrew needs them)
+# ==================================================================================================
+if ! xcode-select -p >/dev/null 2>&1; then
+  info "Installing Xcode Command Line Tools..."
+  # Headless install: this magic file makes softwareupdate list the CLT package,
+  # so we can install it without the GUI dialog.
+  TRIGGER="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+  touch "$TRIGGER"
+  LABEL="$(softwareupdate -l 2>/dev/null \
+    | grep -B1 -E 'Command Line Tools' \
+    | awk -F'* ' '/^ *\*/ {print $2}' | sed 's/^Label: //' | tail -n1)"
+  if [ -n "$LABEL" ]; then
+    softwareupdate -i "$LABEL" --verbose
+  else
+    # Fallback: trigger the GUI installer and wait for the user to finish it.
+    xcode-select --install >/dev/null 2>&1 || true
+    info "Finish the Command Line Tools install dialog, then press Return..."
+    read -r _
+  fi
+  rm -f "$TRIGGER"
+else
+  info "Xcode Command Line Tools already installed."
+fi
+
 # 1. Homebrew
 # ==================================================================================================
 if ! command -v brew >/dev/null 2>&1; then
