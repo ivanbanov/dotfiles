@@ -91,25 +91,29 @@ PACKAGES=(zsh git hammerspoon config)
 BACKUP_DIR="$HOME/.dotfiles-backup"
 info "Stowing: ${PACKAGES[*]}"
 for pkg in "${PACKAGES[@]}"; do
-  # For every file the package provides, clear a conflicting target: a real
-  # file gets backed up; a stray symlink not pointing into this repo is removed.
-  # (Symlinks stow already owns are left for --restow to handle.)
+  # Clear each conflicting target so --restow can link cleanly. readlink -f gives
+  # the absolute resolved path (stow writes relative links, so raw readlink can't
+  # be compared). Anything resolving into this repo is already ours — including a
+  # target reached through a folded parent (~/.config -> repo/config/.config),
+  # which must never be moved or we'd gut the repo's own sources.
   find "$pkg" -type f -not -name '.DS_Store' | while IFS= read -r src; do
     rel="${src#"$pkg"/}"          # path relative to $HOME, e.g. .zshrc
     target="$HOME/$rel"
+    resolved="$(readlink -f "$target" 2>/dev/null || true)"
+    case "$resolved/" in "$DOTFILES_DIR"/*) continue ;; esac
     if [ -L "$target" ]; then
-      case "$(readlink "$target")" in
-        "$DOTFILES_DIR"/*) : ;;                 # already ours — leave it
-        *) info "Replacing foreign symlink $rel"; rm -f "$target" ;;
-      esac
+      info "Replacing foreign symlink $rel"; rm -f "$target"
     elif [ -e "$target" ]; then
       info "Backing up existing $rel -> $BACKUP_DIR/$rel"
       mkdir -p "$BACKUP_DIR/$(dirname "$rel")"
       mv "$target" "$BACKUP_DIR/$rel"
     fi
   done
-  # Don't let one package's leftover conflict abort the rest of the install.
-  stow --target="$HOME" --restow "$pkg" || warn "stow $pkg had conflicts — check $BACKUP_DIR"
+  # --no-folding links files individually and keeps target dirs real, instead of
+  # collapsing a whole dir into one symlink into the repo (what let apps write
+  # state straight into it). Don't let one conflict abort the other packages.
+  stow --target="$HOME" --no-folding --restow "$pkg" \
+    || warn "stow $pkg had conflicts — check $BACKUP_DIR"
 done
 
 # 7. macOS system preferences
