@@ -75,14 +75,17 @@ cask "font-fira-code-nerd-font"
 # Web browser
 cask "google-chrome"
 
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
+
 # Native desktop AI assistant from Google
 cask "google-gemini"
 
+# Desktop automation application
+cask "hammerspoon"
+
 # Speech to text application
 cask "handy"
-
-# Terminal emulator that uses platform-native UI and GPU acceleration
-cask "ghostty"
 
 # Utility to hide menu bar items
 cask "hiddenbar"
