@@ -36,14 +36,7 @@ What `install.sh` does:
 
 ## Stow
 
-Each dir in this repo is a package that [`stow`](https://www.gnu.org/software/stow/manual/stow.html) symlinks into `$HOME`.
-
-```
-zsh/         -> ~/.zshrc
-git/         -> ~/.gitconfig, ~/.gitignore_global
-hammerspoon/ -> ~/.hammerspoon/init.lua
-config/      -> ~/.config/{package}
-```
+Each dir in this repo is a package that [`stow`](https://www.gnu.org/software/stow/manual/stow.html) symlinks into `$HOME`. A package's inner layout mirrors `$HOME`, so its contents show where the links land (e.g. `config/.config/…` → `~/.config/…`).
 
 ### Commands
 
