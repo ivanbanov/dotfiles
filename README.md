@@ -33,15 +33,36 @@ cd ~/dotfiles
 What `install.sh` does:
 
 - 🍺 Installs Homebrew
-- 📦 Install packages
+- 📦 Installs packages
 - 🐚 Installs oh-my-zsh + plugins
-- 🔗 Stows every package (existing files are backed up to `~/.dotfiles-backup`)
+- 🤖 Installs Claude Code
+- 🔗 Stows every package
 - 🍎 Applies macOS defaults
+- 🎛️ Imports apps preferences
 - 🔁 Reloads zsh
 
 > Some keyboard/trackpad settings (three-finger drag, tap-to-click, key repeat)
 > only take effect after a **logout/login**. To also empty the Dock on a fresh
 > Mac, run `CLEAR_DOCK=1 ./install.sh`.
+
+### Manual steps
+
+A few settings can't be scripted and must be set once by hand:
+
+- **Accessibility permissions** — Hammerspoon and Rectangle do nothing until
+  approved under System Settings → Privacy & Security → Accessibility (Handy
+  also needs Microphone). Each app prompts on first launch; TCC grants can't be
+  scripted.
+- **Control+scroll to zoom** — System Settings → Accessibility → Zoom → enable
+  **"Use scroll gesture with modifier keys to zoom"** (modifier: Control). Not
+  scriptable: its `com.apple.universalaccess` domain is TCC-protected and only
+  writable by a process with Full Disk Access.
+- **Spotlight hotkey** — the script tries to disable Spotlight's Cmd+Space, but
+  the `com.apple.symbolichotkeys` write is flaky (needs a logout/login and
+  `cfprefsd` can revert it). If Cmd+Space still opens Spotlight, turn it off by
+  hand: System Settings → Keyboard → Keyboard Shortcuts → Spotlight.
+- **Raycast hotkey** — set to Cmd+Space in Raycast → Settings (after Spotlight's
+  is freed).
 
 ## Apps
 
@@ -54,16 +75,15 @@ What `install.sh` does:
 
 ## Stow
 
-Each dir in this repo is a package that [`stow`](https://www.gnu.org/software/stow/manual/stow.html) symlinks into `$HOME`. A package's inner layout mirrors `$HOME`, so its contents show where the links land (e.g. `config/.config/…` → `~/.config/…`).
+Each dir in this repo except `appdefaults/` (imported by `appdefaults.sh`, not stowed) is a package that [`stow`](https://www.gnu.org/software/stow/manual/stow.html) symlinks into `$HOME`. A package's inner layout mirrors `$HOME`, so its contents show where the links land (e.g. `config/.config/…` → `~/.config/…`).
 
 ### Commands
 
 ```sh
-stow zsh            # link one package
-stow */             # link all packages
-stow -R zsh         # restow (re-link after changes)
-stow -D zsh         # unstow (remove links)
-stow -n -v zsh      # dry run, verbose (preview, no changes)
+stow zsh [...package]                 # link packages
+stow -R zsh                           # restow (re-link after changes)
+stow -D zsh                           # unstow (remove links)
+stow -n -v zsh                        # dry run, verbose (preview, no changes)
 ```
 
 If Stow reports a conflict, an existing real file is in the way. Back it up and

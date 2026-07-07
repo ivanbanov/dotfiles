@@ -86,7 +86,7 @@
     "ss03": true,
   },
   "buffer_font_weight": 400,
-  "buffer_font_family": "Fira Code",
+  "buffer_font_family": "FiraCode Nerd Font",
   "collaboration_panel": {
     "dock": "left",
     "button": false,

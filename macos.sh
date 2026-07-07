@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# Last verified on macOS 26.5 (Tahoe). `defaults` writes to renamed/removed keys
+# fail silently — re-verify this file after every major macOS upgrade.
 
 set -euo pipefail
 
@@ -20,8 +23,10 @@ defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
 # Free up Cmd+Space: disable Spotlight's hotkey so Raycast can own it
 # ==================================================================================================
 # Hotkey 64 = "Show Spotlight search" (Cmd+Space), 65 = Finder search window.
-# Set enabled=false; needs a logout/login to take effect. (Set Raycast's hotkey
-# to Cmd+Space in its own settings — that part isn't scriptable.)
+# Set enabled=false; needs a logout/login to take effect. This is FLAKY — cfprefsd
+# can revert the direct plist edit, so if Cmd+Space still opens Spotlight, disable
+# it by hand (System Settings > Keyboard > Keyboard Shortcuts > Spotlight). See README.
+# (Set Raycast's hotkey to Cmd+Space in its own settings — that part isn't scriptable.)
 PB=/usr/libexec/PlistBuddy
 SHK="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
 for id in 64 65; do
@@ -51,6 +56,9 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 # Faster mouse tracking
 defaults write NSGlobalDomain com.apple.mouse.scaling -float 1.5
+# NOTE: Control+scroll to zoom (Accessibility > Zoom) can't be scripted — its
+# com.apple.universalaccess domain is TCC-protected and needs Full Disk Access.
+# Enable it manually; see the README.
 
 # Finder
 # ==================================================================================================
@@ -70,7 +78,7 @@ defaults write com.apple.screencapture disable-shadow -bool true
 # NOTE: only the system/Control-Center items live here. Third-party icons
 # (Raycast, Stats, 1Password, ...) are toggled inside each app, and their
 # left-right order is set once by Cmd-dragging — neither is scriptable.
-# Clock: digital, 24h, with date, no day-of-week
+# Clock: digital, 24h, no date (2 = never; Itsycal shows the date), no day-of-week
 defaults write com.apple.menuextra.clock IsAnalog -bool false
 defaults write com.apple.menuextra.clock ShowDate -int 2
 defaults write com.apple.menuextra.clock ShowDayOfWeek -bool false

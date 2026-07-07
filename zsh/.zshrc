@@ -33,10 +33,10 @@ export FZF_DEFAULT_OPTS="
 --height 10
 "
 
-# nvm
+# nvm (brew keeps nvm.sh in its prefix — ~/.nvm is only nvm's working dir)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 # Claude
 export CLAUDE_CODE_EXECUTABLE="$(which claude)"
@@ -51,7 +51,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "/Users/ivanbanov/.bun/_bun" ] && source "/Users/ivanbanov/.bun/_bun"
 
 # aliases
-alias back="cd $OLDPWD"
+alias back='cd "$OLDPWD"'
 
 alias z="zed"
 alias "z?"="fzf -m --height 100% --preview 'bat --style=numbers --color=always {}' --bind='enter:execute-silent(zed {+})+abort'"
@@ -82,7 +82,7 @@ alias gps="git push"
 alias gst="git status"
 alias gdf="git diff"
 alias grs="git reset"
-alias groot="while [ '$PWD' != '/' ] && [ ! -d .git ]; do cd ..; done"
+alias groot='while [ "$PWD" != / ] && [ ! -d .git ]; do cd ..; done'
 alias gstash="git stash clear && git add . && git stash"
 alias gwip="git add . && git commit -m 'WIP' --no-verify"
 alias greset1="git reset HEAD~1"

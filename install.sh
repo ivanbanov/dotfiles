@@ -51,7 +51,11 @@ brew trust --tap atlassian/acli >/dev/null 2>&1 || true
 info "Installing packages from Brewfile..."
 brew bundle --file="$DOTFILES_DIR/Brewfile"
 
+# brew's nvm doesn't create its working dir, and nvm errors without it
+mkdir -p "$HOME/.nvm"
+
 # 3. oh-my-zsh + plugins
+# ==================================================================================================
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   info "Installing oh-my-zsh..."
   RUNZSH=no KEEP_ZSHRC=yes sh -c \
@@ -127,6 +131,12 @@ for pkg in "${PACKAGES[@]}"; do
   stow --target="$HOME" --no-folding --restow "$pkg" \
     || warn "stow $pkg had conflicts — check $BACKUP_DIR"
 done
+
+# bat only discovers custom themes (~/.config/bat/themes) after a cache build.
+if command -v bat >/dev/null 2>&1; then
+  info "Rebuilding bat cache..."
+  bat cache --build >/dev/null
+fi
 
 # 7. macOS system preferences
 # ==================================================================================================
