@@ -1,0 +1,218 @@
+# gwt — git worktree helper
+# Worktrees always live in <project>/.worktrees/<name>.
+#
+#   gwt               pick a worktree (fzf if installed, menu otherwise) and cd into it
+#   gwt <name>        cd into worktree <name>; create it first if it doesn't exist
+#   gwt -             cd back to the main checkout
+#   gwt -l            list all worktrees
+#   gwt -d [name]     remove a worktree (defaults to the one you're standing in)
+#   gwt -d -f [name]  force-remove even if the worktree is dirty (also: -df)
+#   gwt -h            show usage
+#
+# Add to ~/.zshrc (after compinit, so tab completion registers):
+#   source ~/.zsh/gwt
+
+# Resolve the main project root, even when called from inside a
+# .worktrees/<name> checkout or any subdirectory — this is what prevents
+# nesting worktrees recursively.
+_gwt_root() {
+  local gitdir
+  gitdir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || return 1
+  print -r -- "${gitdir:h}"
+}
+
+# Keep `git status` in the main checkout clean without touching .gitignore.
+_gwt_exclude() {
+  local gitdir exclude
+  gitdir=$(git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || return
+  exclude="$gitdir/info/exclude"
+  grep -qxF '.worktrees/' "$exclude" 2>/dev/null && return
+  mkdir -p "$gitdir/info"
+  print '.worktrees/' >> "$exclude"
+}
+
+# Print the path of an interactively chosen worktree.
+# Usage: _gwt_pick <root> [--no-main]
+_gwt_pick() {
+  local root=$1 no_main=$2
+  local -a wt_paths entries
+  wt_paths=(${(f)"$(git -C "$root" worktree list --porcelain 2>/dev/null \
+    | awk '/^worktree /{print substr($0, 10)}')"})
+
+  local p name branch
+  for p in "${wt_paths[@]}"; do
+    if [[ $p == "$root" ]]; then
+      [[ -n $no_main ]] && continue
+      name='(main)'
+    elif [[ $p == "$root"/.worktrees/* ]]; then
+      name=${p#"$root"/.worktrees/}
+    else
+      continue
+    fi
+    branch=$(git -C "$p" branch --show-current 2>/dev/null)
+    entries+=("${name}"$'\t'"${p}"$'\t'"[${branch:-detached}]")
+  done
+
+  (( ${#entries} )) || { print -u2 'gwt: no worktrees found'; return 1 }
+
+  local choice
+  if (( $+commands[fzf] )); then
+    choice=$(printf '%s\n' "${entries[@]}" \
+      | fzf --delimiter=$'\t' --with-nth=1,3 --height=40% --reverse \
+            --prompt='worktree> ' \
+            --preview 'git -C {2} log --oneline --color=always -10') || return 1
+  else
+    local -a menu
+    local e
+    for e in "${entries[@]}"; do
+      menu+=("${${(ps:\t:)e}[1]} ${${(ps:\t:)e}[3]}")
+    done
+    local sel
+    select sel in "${menu[@]}"; do
+      [[ -n $sel ]] && choice=${entries[REPLY]}
+      break
+    done
+    [[ -n $choice ]] || return 1
+  fi
+
+  print -r -- "${${(ps:\t:)choice}[2]}"
+}
+
+# Usage: _gwt_delete <root> <force-flag-or-empty> [name]
+_gwt_delete() {
+  local root=$1 force=$2 name=$3
+
+  if [[ -z $name ]]; then
+    local top
+    top=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ $top == "$root"/.worktrees/* ]]; then
+      name=${top#"$root"/.worktrees/}
+    else
+      local dest
+      dest=$(_gwt_pick "$root" --no-main) || return 1
+      name=${dest#"$root"/.worktrees/}
+    fi
+  fi
+
+  local wt="$root/.worktrees/$name"
+  [[ -d $wt ]] || { print -u2 "gwt: no worktree named '$name'"; return 1 }
+
+  local branch
+  branch=$(git -C "$wt" branch --show-current 2>/dev/null)
+
+  # Don't saw off the branch we're sitting on
+  [[ $PWD == $wt || $PWD == $wt/* ]] && cd "$root"
+
+  git -C "$root" worktree remove $force "$wt" || return
+  print "Removed worktree '$name'"
+
+  if [[ -n $branch ]]; then
+    if read -q "?Also delete branch '$branch'? [y/N] "; then
+      print ''
+      git -C "$root" branch -D "$branch"
+    else
+      print ''
+    fi
+  fi
+  return 0
+}
+
+_gwt_usage() {
+  cat <<'EOF'
+gwt — git worktree helper (worktrees live in <project>/.worktrees)
+
+  gwt               pick a worktree and cd into it
+  gwt <name>        cd into worktree <name>, creating it if needed
+  gwt -             cd back to the main checkout
+  gwt -l            list all worktrees
+  gwt -d [name]     remove a worktree (defaults to the current one)
+  gwt -d -f [name]  force-remove a dirty worktree (also: -df)
+  gwt -h            show this help
+EOF
+}
+
+gwt() {
+  emulate -L zsh
+  local root
+  root=$(_gwt_root) || { print -u2 'gwt: not inside a git repository'; return 1 }
+
+  local delete= force=
+  while [[ $1 == -* && $1 != - ]]; do
+    case $1 in
+      -d|--rm)     delete=1 ;;
+      -f|--force)  force=--force ;;
+      -df|-fd)     delete=1; force=--force ;;
+      -l|--list)   git -C "$root" worktree list; return ;;
+      -h|--help)   _gwt_usage; return 0 ;;
+      *)           print -u2 "gwt: unknown option '$1' (try gwt -h)"; return 1 ;;
+    esac
+    shift
+  done
+
+  if [[ -n $delete ]]; then
+    _gwt_delete "$root" "$force" "$1"
+    return
+  fi
+
+  # gwt — pick interactively
+  if (( $# == 0 )); then
+    local dest
+    dest=$(_gwt_pick "$root") || return 1
+    cd "$dest"
+    return
+  fi
+
+  # gwt - — jump back to the main checkout
+  if [[ $1 == - ]]; then
+    cd "$root"
+    return
+  fi
+
+  local name=$1
+  local wt="$root/.worktrees/$name"
+
+  # Already exists — just go there
+  if [[ -d $wt ]]; then
+    cd "$wt"
+    return
+  fi
+
+  mkdir -p "${wt:h}"
+  _gwt_exclude "$root"
+
+  if git -C "$root" show-ref --verify --quiet "refs/heads/$name"; then
+    # Existing local branch
+    git -C "$root" worktree add "$wt" "$name" || return
+  elif git -C "$root" show-ref --verify --quiet "refs/remotes/origin/$name"; then
+    # Branch exists on origin — create a local tracking branch
+    git -C "$root" worktree add --track -b "$name" "$wt" "origin/$name" || return
+  else
+    # Brand new branch off the current HEAD
+    git -C "$root" worktree add -b "$name" "$wt" || return
+  fi
+  cd "$wt"
+}
+
+# Tab completion: worktree names always; branch names too unless deleting
+_gwt_completion() {
+  local root
+  root=$(_gwt_root) || return
+  local -a wt_paths names
+  wt_paths=(${(f)"$(git -C "$root" worktree list --porcelain 2>/dev/null \
+    | awk '/^worktree /{print substr($0, 10)}')"})
+  wt_paths=(${(M)wt_paths:#${root}/.worktrees/*})
+  names=(${wt_paths#${root}/.worktrees/})
+
+  if (( ${words[(I)-d|--rm|-df|-fd]} )); then
+    compadd -- $names
+  else
+    local -a branches
+    branches=(${(f)"$(git -C "$root" for-each-ref --format='%(refname:short)' refs/heads 2>/dev/null)"})
+    branches+=(${(f)"$(git -C "$root" for-each-ref --format='%(refname:strip=3)' refs/remotes/origin 2>/dev/null)"})
+    branches=(${branches:#HEAD})
+    compadd -- $names $branches
+  fi
+}
+if (( $+functions[compdef] )); then
+  compdef _gwt_completion gwt
+fi
