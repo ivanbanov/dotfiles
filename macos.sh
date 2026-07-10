@@ -75,6 +75,20 @@ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 # Breadcrumb path bar + status bar (item count / free space)
 defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
+# New windows open Home; open folders as tabs instead of new windows
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
+defaults write com.apple.finder FinderSpawnTab -bool true
+# Keep the desktop clear of mounted volumes
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
+defaults write com.apple.finder ShowMountedServersOnDesktop -bool false
+# No Recent Tags in the sidebar
+defaults write com.apple.finder ShowRecentTags -bool false
+# NOTE: the Sidebar Favorites/Locations list and "Tint folders based on tags"
+# aren't reliably scriptable — macOS keeps the sidebar in a locked binary store
+# (com.apple.sidebarlists / SFL). Set those by hand.
 
 # Screenshots: no drop shadow, no floating thumbnail
 # ==================================================================================================
