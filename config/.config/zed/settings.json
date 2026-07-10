@@ -12,6 +12,16 @@
     "dark": "Zed (Default)",
   },
   "cli_default_open_behavior": "existing_window",
+  // Keep nested worktrees out of project scanning so the agent panel
+  // doesn't conflate them with the main project. Includes Zed defaults —
+  // this setting replaces, not merges, the built-in list.
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.jj",
+    "**/.DS_Store",
+    "**/.settings",
+    "**/.worktrees",
+  ],
   "project_panel": {
     "dock": "left",
   },

@@ -15,6 +15,11 @@ brew "atlassian/acli/acli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 
+# JavaScript package managers (npm ships with node, installed via nvm)
+brew "bun"
+brew "pnpm"
+brew "yarn"
+
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 

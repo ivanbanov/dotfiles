@@ -54,6 +54,20 @@ brew bundle --file="$DOTFILES_DIR/Brewfile"
 # brew's nvm doesn't create its working dir, and nvm errors without it
 mkdir -p "$HOME/.nvm"
 
+# Node.js LTS via nvm (this is what provides npm; bun/pnpm/yarn come from brew).
+# nvm.sh reads variables that may be unset, so pause `set -u` around it.
+export NVM_DIR="$HOME/.nvm"
+set +u
+. "$(brew --prefix nvm)/nvm.sh" --no-use
+if [ "$(nvm version 'lts/*')" = "N/A" ]; then
+  info "Installing Node.js LTS via nvm..."
+  nvm install --lts
+  nvm alias default 'lts/*'
+else
+  info "Node.js LTS already installed."
+fi
+set -u
+
 # 3. oh-my-zsh + plugins
 # ==================================================================================================
 if [ ! -d "$HOME/.oh-my-zsh" ]; then

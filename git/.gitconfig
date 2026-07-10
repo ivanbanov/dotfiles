@@ -30,3 +30,9 @@
 	pr-log = !git log --oneline $(git merge-base master HEAD)..HEAD
 [gpg "ssh"]
 	allowedSignersFile = /Users/ivanbanov/.ssh/allowed_signers
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

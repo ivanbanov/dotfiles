@@ -128,3 +128,6 @@ typeset -U PATH
 
 # start session
 fastfetch
+
+# git worktree helper
+[[ -f ~/.zsh/gwt ]] && source ~/.zsh/gwt
