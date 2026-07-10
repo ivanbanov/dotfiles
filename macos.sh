@@ -56,6 +56,14 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 # Faster mouse tracking
 defaults write NSGlobalDomain com.apple.mouse.scaling -float 1.5
+# Magic Mouse: swipe between pages by scrolling left/right with one finger.
+# MouseTwoFingerHorizSwipeGesture 2 = one-finger scroll (1 = two-finger swipe,
+# 0 = off); the NSGlobalDomain flag turns the scroll into page navigation.
+# Written to both domains so it applies before and after the mouse pairs.
+for dom in com.apple.AppleMultitouchMouse com.apple.driver.AppleBluetoothMultitouch.mouse; do
+  defaults write "$dom" MouseTwoFingerHorizSwipeGesture -int 2
+done
+defaults write NSGlobalDomain AppleEnableMouseSwipeNavigateWithScrolls -bool true
 # NOTE: Control+scroll to zoom (Accessibility > Zoom) can't be scripted — its
 # com.apple.universalaccess domain is TCC-protected and needs Full Disk Access.
 # Enable it manually; see the README.
