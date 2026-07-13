@@ -65,36 +65,43 @@ CTX_COLOR="\033[34m"
 COST_COLOR="\033[32m"
 STYLE_COLOR="\033[37m"
 
-output="${DIR_COLOR}${dir_display}${RESET}"
+# Line 1: non-Claude data — directory, git branch/dirty, time
+line1="${DIR_COLOR}${dir_display}${RESET}"
 
 if [ -n "$branch" ]; then
   branch_str="${BRANCH_COLOR}👻 ${branch}${RESET}"
   if [ -n "$dirty" ]; then
     branch_str="${branch_str} ${DIRTY_COLOR}${dirty}${RESET}"
   fi
-  output="${output} ${branch_str}"
+  line1="${line1} ${branch_str}"
 fi
 
-output="${output} ${TIME_COLOR}${time_display}${RESET}"
+line1="${line1} ${TIME_COLOR}${time_display}${RESET}"
+
+# Line 2: Claude data — model, effort, context usage, cost, output style
+line2=""
 
 if [ -n "$model" ]; then
-  output="${output} ${MODEL_COLOR}${model}${RESET}"
+  line2="${line2}${MODEL_COLOR}${model}${RESET}"
 fi
 
 if [ -n "$effort" ]; then
-  output="${output} ${EFFORT_COLOR}${effort} effort${RESET}"
+  line2="${line2} ${EFFORT_COLOR}${effort} effort${RESET}"
 fi
 
 if [ -n "$ctx_bar" ]; then
-  output="${output} ${CTX_COLOR}${ctx_bar}${RESET}"
+  line2="${line2} ${CTX_COLOR}${ctx_bar}${RESET}"
 fi
 
 if [ -n "$cost_display" ]; then
-  output="${output} ${COST_COLOR}${cost_display}${RESET}"
+  line2="${line2} ${COST_COLOR}${cost_display}${RESET}"
 fi
 
 if [ -n "$style" ]; then
-  output="${output} ${STYLE_COLOR}${style}${RESET}"
+  line2="${line2} ${STYLE_COLOR}${style}${RESET}"
 fi
 
-printf "%b" "$output"
+# strip a leading space in case model was empty
+line2="${line2# }"
+
+printf "%b\n%b" "$line1" "$line2"
