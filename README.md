@@ -50,9 +50,11 @@ What `install.sh` does:
 A few settings can't be scripted and must be set once by hand:
 
 - **Accessibility permissions** — Hammerspoon and Rectangle do nothing until
-  approved under System Settings → Privacy & Security → Accessibility (Handy
+  approved under System Settings → Privacy & Security → Accessibility (Hex
   also needs Microphone). Each app prompts on first launch; TCC grants can't be
   scripted.
+- **Hex launch at login** — turn it on in Hex's settings. Hex registers itself
+  through `SMAppService`, which only the app can do.
 - **Control+scroll to zoom** — System Settings → Accessibility → Zoom → enable
   **"Use scroll gesture with modifier keys to zoom"** (modifier: Control). Not
   scriptable: its `com.apple.universalaccess` domain is TCC-protected and only
