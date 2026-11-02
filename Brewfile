@@ -1,6 +1,7 @@
 # Tap
 # ==============================================================================
 
+tap "anomalyco/tap"
 tap "atlassian/acli"
 
 # Brew
@@ -86,8 +87,8 @@ cask "google-gemini"
 # Desktop automation application
 cask "hammerspoon"
 
-# Speech to text application
-cask "handy"
+# Local voice dictation (speech to text)
+cask "anomalyco/tap/hex"
 
 # Utility to hide menu bar items
 cask "hiddenbar"

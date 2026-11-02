@@ -162,13 +162,13 @@ info "Applying macOS defaults..."
 info "Importing app preferences..."
 "$DOTFILES_DIR/appdefaults.sh"
 
-# Handy stores config as a JSON file (not a defaults domain). Seed it only if
-# absent — never clobber a live file where you've since added API keys.
-HANDY_DIR="$HOME/Library/Application Support/com.pais.handy"
-if [ ! -f "$HANDY_DIR/settings_store.json" ]; then
-  info "Seeding Handy settings..."
-  mkdir -p "$HANDY_DIR"
-  cp "$DOTFILES_DIR/appdefaults/handy/settings_store.json" "$HANDY_DIR/settings_store.json"
+# Hex stores config as a JSON file (not a defaults domain). Seed it only if
+# absent — never clobber a live file the app has since migrated or changed.
+HEX_DIR="$HOME/Library/Application Support/hex"
+if [ ! -f "$HEX_DIR/settings.json" ]; then
+  info "Seeding Hex settings..."
+  mkdir -p "$HEX_DIR"
+  cp "$DOTFILES_DIR/appdefaults/hex/settings.json" "$HEX_DIR/settings.json"
 fi
 
 # 9. Celebrate 🎉
