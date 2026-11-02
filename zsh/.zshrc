@@ -1,4 +1,5 @@
 export EDITOR=nvim
+export HERDR_ENV=0
 
 # brew
 export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
@@ -59,6 +60,7 @@ alias "z?"="fzf -m --height 100% --preview 'bat --style=numbers --color=always {
 alias zshrc="z ~/.zshrc"
 alias gitconfig="z ~/.gitconfig"
 
+alias dev="cd ~/dev"
 alias dnk="cd ~/dev/dunky"
 alias mds="cd ~/dev/miro/design-system"
 alias mcl="cd ~/dev/miro/client"
@@ -131,3 +133,9 @@ fastfetch
 
 # git worktree helper
 [[ -f ~/.zsh/gwt ]] && source ~/.zsh/gwt
+
+# android (sdk and jdk via brew)
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
+export ANDROID_HOME="/opt/homebrew/share/android-commandlinetools"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+export PATH=$PATH:$HOME/.maestro/bin
